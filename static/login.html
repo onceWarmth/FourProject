@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="author" content="Varme">
+    </head>
+
+    <body>
+        <h1>Login</h1>
+        <form>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="password">
+            <button id="submit" type="button">Submit</button>
+        </form>
+    </body>
+    <script type="text/javascript" src="js/jquery/3.3.1/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+
+        $("#submit").click(function() {
+            var username = $("#username").val();
+            var password = $("#password").val();
+
+            if (username == "") {
+                alert("Please input your username.");
+                return;
+            }
+
+            if (password == "") {
+                alert("Please input your password.");
+                return;
+            }
+
+            var data = {
+                "username": username,
+                "password": password
+            };
+
+            console.log(data);
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                url: "/login/login/",
+                success: function(data, textStatus, jqXHR) {
+                    console.log(data);
+
+                    if (data["isSuccess"]) {
+                        window.location.href = "/index.html";
+                        return;
+                    } else {
+                        alert(data["message"]);
+                        return;
+                    }
+                },
+                error: function(jqXHR, textStatus, error) {
+                    alert("Server down, please contact the system administrator.");
+                    console.log(error);
+                }
+            });
+        });
+    </script>
+</html>
